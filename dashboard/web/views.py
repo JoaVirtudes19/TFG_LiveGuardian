@@ -1,5 +1,6 @@
 from django.shortcuts import render
-
+from web.camera import camCache
+from django.http import StreamingHttpResponse
 # Create your views here.
 
 
@@ -15,3 +16,18 @@ def detecciones(request):
 
 def ayuda(request):
     return render(request,'ayuda.html',{'title':"Ayuda"}) ### Vista provisional
+
+### Función temporal para probar las cámaras
+def video(request):
+    CAMERA_INPUT = camCache.get(18) ### Cambiar por el id de la camara en cuestion
+    try:
+        print("ENTRAMOS")
+        return StreamingHttpResponse(gen(CAMERA_INPUT),content_type="multipart/x-mixed-replace;boundary=frame")
+    except:
+        render(request,'inicio.html')
+
+def gen(camera):
+    while True:
+        frame = camera.get_frame()
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')

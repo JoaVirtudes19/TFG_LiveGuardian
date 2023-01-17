@@ -37,6 +37,8 @@ class Cam(models.Model):
     groups = models.ManyToManyField(Group,blank=True)
     def __str__(self) -> str:
         return str(self.name)
+    
+
 
 
 
@@ -54,5 +56,7 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
     except:
         ### Añadir a un log
         print("Archivo "+str(instance.model.name)+" no ha podido ser eliminado")
+
+
 
 
