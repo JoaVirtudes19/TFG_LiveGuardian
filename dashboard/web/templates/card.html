@@ -1,0 +1,23 @@
+<div class="col-md-4" style="margin-top: 1rem;">
+    <a href="">
+    <div class="card mb-4">
+        <img class="img-fluid"  alt="{{cam.name}}" style="max-height: 225px  !important;;"
+         src="http://192.168.1.36:8080/video"> 
+          <div class="card-img-overlay">
+            <h5 class="card-title" style="color: white;">{{cam.name}}</h5>
+          </div>
+        
+    </div>
+    </a>
+    <div style="display: flex; justify-content: space-around;">
+        {% if cam.detector == None %}<div><i class="fa-solid fa-brain"></i> Sin detector</div>
+        {% else %} <div class="haveDetector"><i class="fa-solid fa-brain"></i> {{cam.detector.name}}</div> {% endif %}
+        {% if cam.groups.all %} 
+        <div class="haveTelegram"><i class="fa-brands fa-telegram" ></i> {{cam.groups.first}} </div>
+        {% else %} <div><i class="fa-brands fa-telegram" ></i> Sin grupo </div> {% endif %}
+        
+        <div><i class="fa-solid fa-trash"></i> </div>
+         <div><i class="fa-solid fa-gear"></i></div>
+
+    </div>
+</div>

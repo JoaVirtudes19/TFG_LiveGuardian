@@ -5,5 +5,16 @@
 {% block contenido %}
 <main role="main">
     <h1 class="text-center" style="margin-top: 30px;">Cámaras</h1>
+    <div class="album py-5">
+    <div class="container">
+        <div class="row">
+    {% for cam in cameras %}
+    {% include "card.html" %}
+    {% empty %}
+    <h4>No se ha cargado ninguna cámara todavía</h4>
+    {% endfor %}
+                </div>
+            </div>
+        </div>
     </main>
 {% endblock %}
