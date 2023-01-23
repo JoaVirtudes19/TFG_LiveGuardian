@@ -22,5 +22,6 @@ urlpatterns = [
     path('Dashboard/',inicio),
     path('Telegram/',telegram),
     path('Detecciones/',detecciones),
-    path('Ayuda/',ayuda)
+    path('Ayuda/',ayuda),
+    path('video/<int:id_cam>',video)
 ]
