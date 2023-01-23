@@ -1,12 +1,15 @@
 from django.shortcuts import render
 from web.camera import camCache
 from django.http import StreamingHttpResponse
+from web.models import Cam
+
 # Create your views here.
 
 
 
 def inicio(request):
-    return render(request,'inicio.html',{'title':"Dashboard"}) ### Vista provisional
+    cameras = Cam.objects.all()
+    return render(request,'inicio.html',{'title':"Dashboard",'cameras':cameras}) ### Vista provisional
 
 def telegram(request):
     return render(request,'telegram.html',{'title':"Telegram"}) ### Vista provisional
