@@ -1,3 +1,11 @@
 .dashboardNav {
     background-color: #0C4B33;
 }
+
+.haveDetector {
+    color:hsl(3, 100%, 64%);
+}
+
+.haveTelegram {
+    color: hsl(201 ,85%, 55%);
+}
