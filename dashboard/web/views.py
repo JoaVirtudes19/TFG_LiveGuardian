@@ -18,10 +18,9 @@ def ayuda(request):
     return render(request,'ayuda.html',{'title':"Ayuda"}) ### Vista provisional
 
 ### Función temporal para probar las cámaras
-def video(request):
-    CAMERA_INPUT = camCache.get(18) ### Cambiar por el id de la camara en cuestion
+def video(request,id_cam):
+    CAMERA_INPUT = camCache.get(id_cam)
     try:
-        print("ENTRAMOS")
         return StreamingHttpResponse(gen(CAMERA_INPUT),content_type="multipart/x-mixed-replace;boundary=frame")
     except:
         render(request,'inicio.html')
