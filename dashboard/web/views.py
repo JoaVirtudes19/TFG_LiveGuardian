@@ -1,7 +1,10 @@
 from django.shortcuts import render
 from web.camera import camCache
-from django.http import StreamingHttpResponse
+from django.http import StreamingHttpResponse, HttpResponseRedirect
 from web.models import Cam
+from web.forms import CrearCamara
+from django import forms
+from django.forms import ModelForm
 
 # Create your views here.
 
@@ -19,6 +22,23 @@ def detecciones(request):
 
 def ayuda(request):
     return render(request,'ayuda.html',{'title':"Ayuda"}) ### Vista provisional
+
+def crearCamara(request):
+    titulo = "Crear cámara"
+    if request.method == 'POST':
+        form = CrearCamara(request.POST)
+        if form.is_valid():
+            camara = form.save()
+            print("CAMARA CREADA")
+            camCache.add(camara)
+            return HttpResponseRedirect('/Dashboard/')
+        else:
+            return render(request,'crearCamara.html',{'title':titulo,'form':form}) ### Vista provisional
+
+    else:
+        form = CrearCamara()
+        return render(request,'crearCamara.html',{'title':titulo,'form':form}) ### Vista provisional
+
 
 ### Función temporal para probar las cámaras
 def video(request,id_cam):

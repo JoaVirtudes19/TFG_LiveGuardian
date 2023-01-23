@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block tituloPagina %} Inicio {% endblock %}
+
+{% block contenido %}
+<main role="main">
+    <div class="container">
+    <form action="/CrearCamara/" method="post" class="text-center">
+        {% csrf_token %}
+        <div class="form-group">
+        {{form}}
+        <input type='submit' value='Crear' class="btn btn-info"/>
+        </div>
+      </form>
+    </div>
+    </main>
+{% endblock %}
