@@ -24,5 +24,6 @@ urlpatterns = [
     path('Detecciones/',detecciones),
     path('Ayuda/',ayuda),
     path('video/<int:id_cam>',video),
-    path('CrearCamara/',crearCamara)
+    path('CrearCamara/',crearCamara),
+    path('deleteCam/<int:id_cam>',deleteCam),
 ]

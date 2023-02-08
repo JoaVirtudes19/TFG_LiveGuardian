@@ -29,9 +29,8 @@ def crearCamara(request):
         form = CrearCamara(request.POST)
         if form.is_valid():
             camara = form.save()
-            print("CAMARA CREADA")
             camCache.add(camara)
-            return HttpResponseRedirect('/Dashboard/')
+            return HttpResponseRedirect('/')
         else:
             return render(request,'crearCamara.html',{'title':titulo,'form':form}) ### Vista provisional
 
@@ -39,6 +38,16 @@ def crearCamara(request):
         form = CrearCamara()
         return render(request,'crearCamara.html',{'title':titulo,'form':form}) ### Vista provisional
 
+
+
+def deleteCam(request,id_cam):
+    try:
+        Cam.objects.get(id=id_cam).delete() ### Intentamos borrar la cámara
+        camCache.delete(id_cam)
+        return HttpResponseRedirect('/')
+    except:
+        ### Añadir template para error
+         return HttpResponseRedirect('/')
 
 ### Función temporal para probar las cámaras
 def video(request,id_cam):

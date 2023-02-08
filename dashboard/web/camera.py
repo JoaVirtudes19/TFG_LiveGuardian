@@ -13,6 +13,7 @@ class VideoCamera(object):
         ### Tenemos que matar el hilo primero
         print("Camera: "+str(self.instance.name)+ " has been deleted.")
         self.video.release()
+        ### Mirar como parar el hilo
 
     def get_frame(self):
         image = self.frame
@@ -50,8 +51,8 @@ class CamCache():
 
 
 
-    def delete(self,instance):
-        self.cache.pop(instance.id,None)
+    def delete(self,id):
+        self.cache.pop(id,None)
 
     def get(self,id):
         return self.cache[id]
