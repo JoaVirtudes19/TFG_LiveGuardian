@@ -39,7 +39,6 @@ def crearCamara(request):
         return render(request,'crearCamara.html',{'title':titulo,'form':form}) ### Vista provisional
 
 
-
 def deleteCam(request,id_cam):
     try:
         Cam.objects.get(id=id_cam).delete() ### Intentamos borrar la cámara
@@ -48,6 +47,7 @@ def deleteCam(request,id_cam):
     except:
         ### Añadir template para error
          return HttpResponseRedirect('/')
+
 
 ### Función temporal para probar las cámaras
 def video(request,id_cam):

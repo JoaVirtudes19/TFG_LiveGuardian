@@ -1,10 +1,17 @@
 from web.models import Cam
 import cv2
 import threading
+from icevision.all import *
+from icevision.models import *
+from PIL import Image
+import numpy as np
+import time
 
 class VideoCamera(object):
     def __init__(self,instance):
         self.instance  = instance
+        self.fps = 0
+        self.recent = []
         self.video = cv2.VideoCapture(instance.url)
         (self.grabbed,self.frame) = self.video.read()
         threading.Thread(target=self.update,args=()).start() ### Hilos para mantener la camara encendida
@@ -33,12 +40,41 @@ class VideoCamera(object):
             self.frame = frame
 
     def detection(self):
-        pass
+        checkpoint_and_model = model_from_checkpoint(self.instance.detector.model.path)
+        model_type = checkpoint_and_model["model_type"]
+        backbone = checkpoint_and_model["backbone"]
+        class_map = checkpoint_and_model["class_map"]
+        img_size = checkpoint_and_model["img_size"]
+        model_type, backbone, class_map, img_size
+        model = checkpoint_and_model["model"]
+        img_size = checkpoint_and_model["img_size"]
+        valid_tfms = tfms.A.Adapter([*tfms.A.resize_and_pad(img_size), tfms.A.Normalize()])
+        while True:
+            (self.grabbed, frame) = self.video.read()
+            if self.fps % 3 == 0: ### Futuro parámetro ajustable desde la configuración en la interfaz
+                self.recent = []
+                img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) ### Posible eliminación
+                img_conv = Image.fromarray(img)
+                pred_dict  = model_type.end2end_detect(img_conv, valid_tfms, model, class_map=class_map, detection_threshold=0.5)
+                if 1 in pred_dict['detection']['label_ids']:
+                    self.recent = pred_dict['detection']['bboxes']
+                nimg = np.array(pred_dict['img']) ### Posible eliminación: Hacemos las marcas directamnete sobre la imagen y así nos ahorramos transformaciones NP
+                ocvim = cv2.cvtColor(nimg, cv2.COLOR_RGB2BGR) ### Posible eliminación
+                self.frame = ocvim   
+                self.fps +=1          
+            else:
+                for box in self.recent:
+                    cv2.rectangle(frame, (box.xmin, box.ymin), (box.xmax, box.ymax), (255,0,0), 2)
+                self.frame = frame
+                self.fps +=1  
+
+            
 
 
 class CamCache():
     def __init__(self) -> None:
         self.cache = dict()
+        self.devices = 0
         ### Start cache
         for camInstance in Cam.objects.all():
             print(str(camInstance.id))
