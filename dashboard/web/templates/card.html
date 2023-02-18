@@ -16,7 +16,7 @@
         <div class="haveTelegram"><i class="fa-brands fa-telegram" ></i> {{cam.groups.first}} </div>
         {% else %} <div><i class="fa-brands fa-telegram" ></i> Sin grupo </div> {% endif %}
         
-        <div><i class="fa-solid fa-trash"></i> </div>
+        <a href="/deleteCam/{{cam.id}}" style="color: black !important;"><div><i class="fa-solid fa-trash"></i> </div></a>
          <div><i class="fa-solid fa-gear"></i></div>
 
     </div>
