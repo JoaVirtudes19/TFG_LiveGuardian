@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block tituloPagina %} Inicio {% endblock %}
+
+{% block contenido %}
+<main role="main">
+    <div class="container">
+      <h1 class="text-center">{{titulo}}</h1>
+    <form action="{{ruta}}" method="post" class="text-center" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+        {{form}}
+        <input type='submit' value='Crear' class="btn btn-info"/>
+        </div>
+      </form>
+    </div>
+    </main>
+{% endblock %}

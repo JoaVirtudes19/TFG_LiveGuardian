@@ -2,7 +2,7 @@ from django.shortcuts import render
 from web.camera import camCache
 from django.http import StreamingHttpResponse, HttpResponseRedirect
 from web.models import Cam
-from web.forms import CrearCamara
+from web.forms import CrearCamara,CrearDetector
 from django import forms
 from django.forms import ModelForm
 
@@ -32,11 +32,28 @@ def crearCamara(request):
             camCache.add(camara)
             return HttpResponseRedirect('/')
         else:
-            return render(request,'crearCamara.html',{'title':titulo,'form':form}) ### Vista provisional
+            return render(request,'formulario.html',{'titulo':titulo,'form':form,'ruta':'/CrearCamara/'}) ### Vista provisional
 
     else:
         form = CrearCamara()
-        return render(request,'crearCamara.html',{'title':titulo,'form':form}) ### Vista provisional
+        return render(request,'formulario.html',{'titulo':titulo,'form':form,'ruta':'/CrearCamara/'}) ### Vista provisional
+
+
+def crearDetector(request):
+    titulo = "Crear detector"
+    if request.method == 'POST':
+        print("POSTSTTTTTTTTTTTTTTTTTT")
+        form = CrearDetector(request.POST, request.FILES)
+        if form.is_valid():
+            print("ES VALIDOOOOOOOOOOOOOOOOOO")
+            detector = form.save()
+            return HttpResponseRedirect('/')
+        else:
+            return render(request,'formulario.html',{'titulo':titulo,'form':form,'ruta':'/CrearDetector/'}) ### Vista provisional
+
+    else:
+        form = CrearDetector()
+        return render(request,'formulario.html',{'titulo':titulo,'form':form,'ruta':'/CrearDetector/'}) ### Vista provisional
 
 
 def deleteCam(request,id_cam):
