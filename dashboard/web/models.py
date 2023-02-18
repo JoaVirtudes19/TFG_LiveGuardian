@@ -37,8 +37,6 @@ class Cam(models.Model):
     groups = models.ManyToManyField(Group,blank=True)
     def __str__(self) -> str:
         return str(self.name)
-    
-
 
 
 

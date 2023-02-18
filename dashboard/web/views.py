@@ -12,16 +12,16 @@ from django.forms import ModelForm
 
 def inicio(request):
     cameras = Cam.objects.all()
-    return render(request,'inicio.html',{'title':"Dashboard",'cameras':cameras}) ### Vista provisional
+    return render(request,'inicio.html',{'titulo':"Dashboard",'cameras':cameras}) ### Vista provisional
 
 def telegram(request):
-    return render(request,'telegram.html',{'title':"Telegram"}) ### Vista provisional
+    return render(request,'telegram.html',{'titulo':"Telegram"}) ### Vista provisional
 
 def detecciones(request):
-    return render(request,'detecciones.html',{'title':"Detecciones"}) ### Vista provisional
+    return render(request,'detecciones.html',{'titulo':"Detecciones"}) ### Vista provisional
 
 def ayuda(request):
-    return render(request,'ayuda.html',{'title':"Ayuda"}) ### Vista provisional
+    return render(request,'ayuda.html',{'titulo':"Ayuda"}) ### Vista provisional
 
 def crearCamara(request):
     titulo = "Crear cámara"
@@ -42,10 +42,8 @@ def crearCamara(request):
 def crearDetector(request):
     titulo = "Crear detector"
     if request.method == 'POST':
-        print("POSTSTTTTTTTTTTTTTTTTTT")
         form = CrearDetector(request.POST, request.FILES)
         if form.is_valid():
-            print("ES VALIDOOOOOOOOOOOOOOOOOO")
             detector = form.save()
             return HttpResponseRedirect('/')
         else:
@@ -64,6 +62,11 @@ def deleteCam(request,id_cam):
     except:
         ### Añadir template para error
          return HttpResponseRedirect('/')
+    
+def detailCam(request,id_cam):
+    titulo = "Vista detallada"
+    cam = Cam.objects.all().get(id=id_cam)
+    return render(request,'detail.html',{'titulo':titulo,'cam':cam}) ### Vista provisional
 
 
 ### Función temporal para probar las cámaras
