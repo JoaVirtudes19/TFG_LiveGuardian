@@ -7,7 +7,14 @@
     <h1 class="text-center" style="margin-top: 30px;">Detecciones</h1>
     <div class="container">
         <div class="d-flex flex-row-reverse bd-highlight"><a href="/CrearDetector/"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i> Crear detector</button></a></div>
-
+        <div class="row">
+            {% for detection in detections %}
+            {% include "cardDetection.html" %}
+            {% empty %}
+            <h4>No se ha cargado ninguna detección todavía.</h4>
+            {% endfor %}
+                        </div>
+                    </div>
     </div>
     </main>
 {% endblock %}

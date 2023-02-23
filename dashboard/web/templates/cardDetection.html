@@ -1,0 +1,18 @@
+<div class="col-md-4" style="margin-top: 1rem;">
+    <a href="">
+    <div class="card mb-4">
+        <img class="img-fluid"  alt="" style="max-height: 225px  !important;;"
+         src="{{detection.img.url}}"> 
+        
+    </div>
+    </a>
+    <div style="display: flex; justify-content: space-around;">
+      <div><i class="fa-solid fa-camera"></i>{% if detection.detector == None %} Sin cámara {% else %}{{detection.cam.name}} {% endif %}</div>
+
+        <div><i class="fa-solid fa-calendar-days"></i> {{detection.date}} </div>
+        
+        
+        <a href="" style="color: black !important;"><div><i class="fa-solid fa-trash"></i> </div></a>
+
+    </div>
+</div>

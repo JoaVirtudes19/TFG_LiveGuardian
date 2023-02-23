@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from web.camera import camCache
 from django.http import StreamingHttpResponse, HttpResponseRedirect
-from web.models import Cam
+from web.models import Cam,Detection
 from web.forms import CrearCamara,CrearDetector
 from django import forms
 from django.forms import ModelForm
@@ -18,7 +18,9 @@ def telegram(request):
     return render(request,'telegram.html',{'titulo':"Telegram"}) ### Vista provisional
 
 def detecciones(request):
-    return render(request,'detecciones.html',{'titulo':"Detecciones"}) ### Vista provisional
+    titulo = "Detecciones"
+    detecciones = Detection.objects.all()
+    return render(request,'detecciones.html',{'titulo':titulo,'detections':detecciones}) ### Vista provisional
 
 def ayuda(request):
     return render(request,'ayuda.html',{'titulo':"Ayuda"}) ### Vista provisional
