@@ -10,17 +10,20 @@ import time
 class VideoCamera(object):
     def __init__(self,instance):
         self.instance  = instance
+        self.live = True
         self.fps = 0
         self.recent = []
         self.video = cv2.VideoCapture(instance.url)
         (self.grabbed,self.frame) = self.video.read()
-        threading.Thread(target=self.update,args=()).start() ### Hilos para mantener la camara encendida
+        self.thread = threading.Thread(target=self.update,args=())
+        self.thread.start()
 
     def __del__(self):
-        ### Tenemos que matar el hilo primero
+        ### Crear un logger
+        print("-----------------EVENT-----------------")
         print("Camera: "+str(self.instance.name)+ " has been deleted.")
         self.video.release()
-        ### Mirar como parar el hilo
+
 
     def get_frame(self):
         image = self.frame
@@ -47,24 +50,26 @@ class VideoCamera(object):
         img_size = checkpoint_and_model["img_size"]
         model_type, backbone, class_map, img_size
         model = checkpoint_and_model["model"]
-        img_size = checkpoint_and_model["img_size"]
         valid_tfms = tfms.A.Adapter([*tfms.A.resize_and_pad(img_size), tfms.A.Normalize()])
-        while True:
+        while self.live:
             (self.grabbed, frame) = self.video.read()
             if self.fps % 3 == 0: ### Futuro parámetro ajustable desde la configuración en la interfaz
                 self.recent = []
+                self.labels = []
                 img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) ### Posible eliminación
                 img_conv = Image.fromarray(img)
-                pred_dict  = model_type.end2end_detect(img_conv, valid_tfms, model, class_map=class_map, detection_threshold=0.5)
-                if 1 in pred_dict['detection']['label_ids']:
+                pred_dict  = model_type.end2end_detect(img_conv, valid_tfms, model, class_map=class_map, detection_threshold=0.5,return_img=False)
+                ### Cambiar el detection_threshold como un parametro de entrada al crear el detector
+                if pred_dict['detection']['label_ids']:
                     self.recent = pred_dict['detection']['bboxes']
-                nimg = np.array(pred_dict['img']) ### Posible eliminación: Hacemos las marcas directamnete sobre la imagen y así nos ahorramos transformaciones NP
-                ocvim = cv2.cvtColor(nimg, cv2.COLOR_RGB2BGR) ### Posible eliminación
-                self.frame = ocvim   
+                    self.labels = pred_dict['detection']['labels']
                 self.fps +=1          
             else:
-                for box in self.recent:
+                for i in range(len(self.recent)):
+                    box = self.recent[i]
+                    label = self.labels[i]
                     cv2.rectangle(frame, (box.xmin, box.ymin), (box.xmax, box.ymax), (255,0,0), 2)
+                    cv2.putText(frame, label, (box.xmin, box.ymin-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255,0,0), 2)
                 self.frame = frame
                 self.fps +=1  
 
@@ -74,7 +79,6 @@ class VideoCamera(object):
 class CamCache():
     def __init__(self) -> None:
         self.cache = dict()
-        self.devices = 0
         ### Start cache
         for camInstance in Cam.objects.all():
             print(str(camInstance.id))
@@ -88,7 +92,9 @@ class CamCache():
 
 
     def delete(self,id):
-        self.cache.pop(id,None)
+        cam = self.cache.pop(id,None)
+        cam.live = False
+        del(cam)
 
     def get(self,id):
         return self.cache[id]
