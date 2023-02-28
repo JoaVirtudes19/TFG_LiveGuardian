@@ -19,7 +19,7 @@ def telegram(request):
 
 def detecciones(request):
     titulo = "Detecciones"
-    detecciones = Detection.objects.all()
+    detecciones = Detection.objects.all().order_by('-id')
     return render(request,'detecciones.html',{'titulo':titulo,'detections':detecciones}) ### Vista provisional
 
 def ayuda(request):
@@ -64,12 +64,21 @@ def deleteCam(request,id_cam):
     except:
         ### Añadir template para error
          return HttpResponseRedirect('/')
+
+def deleteDetection(request,id_detection):
+        Detection.objects.get(id=id_detection).delete() ### Intentamos borrar la cámara
+        return HttpResponseRedirect('/Detecciones')
     
 def detailCam(request,id_cam):
     titulo = "Vista detallada"
     cam = Cam.objects.all().get(id=id_cam)
     return render(request,'detail.html',{'titulo':titulo,'cam':cam}) ### Vista provisional
 
+
+def detailDetection(request,id_detection):
+    titulo = "Vista detallada"
+    detection = Detection.objects.all().get(id=id_detection)
+    return render(request,'detailDetection.html',{'titulo':titulo,'detection':detection}) ### Vista provisional
 
 ### Función temporal para probar las cámaras
 def video(request,id_cam):

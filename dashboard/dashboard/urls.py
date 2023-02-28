@@ -26,7 +26,9 @@ urlpatterns = [
     path('video/<int:id_cam>',video),
     path('CrearCamara/',crearCamara),
     path('deleteCam/<int:id_cam>',deleteCam),
+    path('deleteDetection/<int:id_detection>',deleteDetection),
     path('CrearDetector/',crearDetector),
     path('camara/<int:id_cam>',detailCam),
+    path('detection/<int:id_detection>',detailDetection),
 
 ]

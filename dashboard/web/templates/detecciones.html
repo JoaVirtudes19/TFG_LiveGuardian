@@ -7,14 +7,27 @@
     <h1 class="text-center" style="margin-top: 30px;">Detecciones</h1>
     <div class="container">
         <div class="d-flex flex-row-reverse bd-highlight"><a href="/CrearDetector/"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i> Crear detector</button></a></div>
-        <div class="row">
-            {% for detection in detections %}
-            {% include "cardDetection.html" %}
-            {% empty %}
-            <h4>No se ha cargado ninguna detección todavía.</h4>
-            {% endfor %}
-                        </div>
-                    </div>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col"><i class="far fa-eye"></i></th>
+                <th scope="col"><i class="fa-solid fa-camera"></i> Cámara</th>
+                <th scope="col"><i class="fa-solid fa-calendar-days"></i> Fecha</th>
+                <th scope="col"><i class="fa-solid fa-brain"></i> Detector</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for detection in detections %}
+                <tr>
+                    <th scope="row"><a href="/detection/{{detection.id}}"> Ver </a></th>
+                    <td>{% if detection.cam == None %} Cámara desconocida {% else %}{{detection.cam.name}} {% endif %}</td>
+                    <td>{{detection.date}}</td>
+                    <td>{% if detection.detector == None %} Detector desconocido {% else %}{{detection.detector.name}} {% endif %}</td>
+                  </tr>
+                {% endfor %}
+
+            </tbody>
+          </table>
     </div>
     </main>
 {% endblock %}

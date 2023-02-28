@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block tituloPagina %} Inicio {% endblock %}
+
+{% block contenido %}
+<main role="main">
+    <div class="container">
+        <div class="row" style="margin-top: 30px;">
+            <div class="col-sm-8">        <img class="img-fluid"  alt="{{detection.img.name}}"
+                src="{{detection.img.url}}"> </div>
+            <div class="col-sm-4 text-center d-flex flex-column bd-highlight mb-3 justify-content-between">
+                <h1>Detección #{{detection.id}}</h1>
+                {% if detection.cam == None %}<div><h3><i class="fa-solid fa-camera"></i> Cámara desconocida</h3></div>
+                {% else %} <div class="haveTelegram"><h3><i class="fa-solid fa-camera"></i> {{detection.cam.name}}</h3></div> {% endif %}
+                {% if detection.detector == None %}<div><h3><i class="fa-solid fa-brain"></i> Detector desconocido</h3></div>
+                {% else %} <div class="haveDetector"><h3><i class="fa-solid fa-brain"></i> {{detection.detector.name}}</h3></div> {% endif %}
+                <h5>Items: {% if detection.items == None %}  {% else %} {{detection.items}} {% endif %}</h5>
+                <h5>Probabilidades: {% if detection.pred == None %}  {% else %} {{detection.pred}} {% endif %}</h5>
+                <a href="/deleteDetection/{{detection.id}}"><button type="button" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Eliminar detección</button></a>
+
+
+            </div>
+
+        </div>
+
+    </div>
+    </main>
+{% endblock %}
