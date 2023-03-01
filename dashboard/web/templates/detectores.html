@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block tituloPagina %} Inicio {% endblock %}
+
+{% block contenido %}
+<main role="main">
+    <h1 class="text-center" style="margin-top: 30px;">Detecciones</h1>
+    <div class="container">
+        <div class="d-flex flex-row-reverse bd-highlight"><a href="/CrearDetector/"><button type="button" class="btn btn-success"><i class="fas fa-plus"></i> Crear detector</button></a></div>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Eliminar</th>
+                <th scope="col"><i class="fa-solid fa-signature"></i> Nombre</th>
+                <th scope="col"><i class="fa-solid fa-brain"></i> Modelo</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for detector in detectors %}
+                <tr>
+                    <th scope="row"><a href="/deleteDetector/{{detector.id}}"> <i class="fa-solid fa-trash"></i> </a></th>
+                    <td>{{detector.name}}</td>
+                    <td>{{detector.model}}</td>
+                  </tr>
+                {% endfor %}
+
+            </tbody>
+          </table>
+    </div>
+    </main>
+{% endblock %}

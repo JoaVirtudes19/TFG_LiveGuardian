@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from web.camera import camCache
 from django.http import StreamingHttpResponse, HttpResponseRedirect
-from web.models import Cam,Detection
+from web.models import Cam,Detection,Detector
 from web.forms import CrearCamara,CrearDetector
 from django import forms
 from django.forms import ModelForm
@@ -21,6 +21,11 @@ def detecciones(request):
     titulo = "Detecciones"
     detecciones = Detection.objects.all().order_by('-id')
     return render(request,'detecciones.html',{'titulo':titulo,'detections':detecciones}) ### Vista provisional
+
+def detectores(request):
+    titulo = "Detectores"
+    detectores = Detector.objects.all().order_by('-id')
+    return render(request,'detectores.html',{'titulo':titulo,'detectors':detectores}) ### Vista provisional
 
 def ayuda(request):
     return render(request,'ayuda.html',{'titulo':"Ayuda"}) ### Vista provisional
@@ -66,8 +71,12 @@ def deleteCam(request,id_cam):
          return HttpResponseRedirect('/')
 
 def deleteDetection(request,id_detection):
-        Detection.objects.get(id=id_detection).delete() ### Intentamos borrar la cámara
+        Detection.objects.get(id=id_detection).delete()
         return HttpResponseRedirect('/Detecciones')
+
+def deleteDetector(request,id_detector):
+        Detector.objects.get(id=id_detector).delete()
+        return HttpResponseRedirect('/Detectores')
     
 def detailCam(request,id_cam):
     titulo = "Vista detallada"

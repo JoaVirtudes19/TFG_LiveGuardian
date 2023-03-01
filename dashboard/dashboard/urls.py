@@ -16,17 +16,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from web.views import *
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',inicio),
     path('Dashboard/',inicio),
     path('Telegram/',telegram),
     path('Detecciones/',detecciones),
+    path('Detectores/',detectores),
     path('Ayuda/',ayuda),
     path('video/<int:id_cam>',video),
     path('CrearCamara/',crearCamara),
     path('deleteCam/<int:id_cam>',deleteCam),
     path('deleteDetection/<int:id_detection>',deleteDetection),
+    path('deleteDetector/<int:id_detector>',deleteDetector),
     path('CrearDetector/',crearDetector),
     path('camara/<int:id_cam>',detailCam),
     path('detection/<int:id_detection>',detailDetection),
