@@ -17,6 +17,7 @@ class VideoCamera(object):
         (self.grabbed,self.frame) = self.video.read()
         self.thread = threading.Thread(target=self.update,args=())
         self.thread.start()
+        self.firstFrame = self.frame
 
     def __del__(self):
         ### Crear un logger
@@ -29,7 +30,6 @@ class VideoCamera(object):
         image = self.frame
         _,jpeg = cv2.imencode('.jpg',image)
         return jpeg.tobytes()
-
     ### Streaming
     def update(self):
         if self.instance.detector != None:
@@ -40,7 +40,13 @@ class VideoCamera(object):
     def noDetection(self):
         while True:
             (self.grabbed, frame) = self.video.read()
-            self.frame = frame
+            if self.grabbed:
+                self.frame = frame
+            else:
+                self.frame = self.firstFrame
+                self.video = cv2.VideoCapture(self.instance.url)
+
+
 
     def detection(self):
         checkpoint_and_model = model_from_checkpoint(self.instance.detector.model.path)
@@ -53,6 +59,10 @@ class VideoCamera(object):
         valid_tfms = tfms.A.Adapter([*tfms.A.resize_and_pad(img_size), tfms.A.Normalize()])
         while self.live:
             (self.grabbed, frame) = self.video.read()
+            if not self.grabbed:
+                self.frame = self.firstFrame
+                self.video = cv2.VideoCapture(self.instance.url)
+                continue
             if self.fps % 3 == 0: ### Futuro parámetro ajustable desde la configuración en la interfaz
                 self.recent = []
                 self.labels = []

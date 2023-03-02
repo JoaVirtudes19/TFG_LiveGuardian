@@ -1,11 +1,17 @@
 from django.shortcuts import render
 from web.camera import camCache
 from django.http import StreamingHttpResponse, HttpResponseRedirect
-from web.models import Cam
+from web.models import Cam,Detection,Detector
 from web.forms import CrearCamara,CrearDetector
 from django import forms
 from django.forms import ModelForm
-
+import cv2
+import datetime
+import base64
+from PIL import Image
+from django.core.files.uploadedfile import SimpleUploadedFile
+import numpy as np
+from io import BytesIO
 # Create your views here.
 
 
@@ -18,7 +24,14 @@ def telegram(request):
     return render(request,'telegram.html',{'titulo':"Telegram"}) ### Vista provisional
 
 def detecciones(request):
-    return render(request,'detecciones.html',{'titulo':"Detecciones"}) ### Vista provisional
+    titulo = "Detecciones"
+    detecciones = Detection.objects.all().order_by('-id')
+    return render(request,'detecciones.html',{'titulo':titulo,'detections':detecciones}) ### Vista provisional
+
+def detectores(request):
+    titulo = "Detectores"
+    detectores = Detector.objects.all().order_by('-id')
+    return render(request,'detectores.html',{'titulo':titulo,'detectors':detectores}) ### Vista provisional
 
 def ayuda(request):
     return render(request,'ayuda.html',{'titulo':"Ayuda"}) ### Vista provisional
@@ -62,12 +75,36 @@ def deleteCam(request,id_cam):
     except:
         ### Añadir template para error
          return HttpResponseRedirect('/')
+
+def deleteDetection(request,id_detection):
+        Detection.objects.get(id=id_detection).delete()
+        return HttpResponseRedirect('/Detecciones')
+
+def deleteDetector(request,id_detector):
+        Detector.objects.get(id=id_detector).delete()
+        return HttpResponseRedirect('/Detectores')
     
 def detailCam(request,id_cam):
+    ### Este Bloque de código se puede separar en una función aparte
+    if request.method == 'POST':
+        cam = Cam.objects.all().get(id=id_cam)
+        frame = camCache.get(id_cam).frame
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) ### Posible eliminación
+        img_pil = Image.fromarray(frame)
+        buffer = BytesIO()
+        img_pil.save(buffer, format='JPEG')
+        image_file = SimpleUploadedFile('detection-cam-'+str(id_cam) + '.jpg', buffer.getvalue())
+        fecha = datetime.datetime.now()
+        Detection.objects.create(cam=cam,date=fecha,img=image_file,items='',pred='',detector=None)
     titulo = "Vista detallada"
     cam = Cam.objects.all().get(id=id_cam)
     return render(request,'detail.html',{'titulo':titulo,'cam':cam}) ### Vista provisional
 
+
+def detailDetection(request,id_detection):
+    titulo = "Vista detallada"
+    detection = Detection.objects.all().get(id=id_detection)
+    return render(request,'detailDetection.html',{'titulo':titulo,'detection':detection}) ### Vista provisional
 
 ### Función temporal para probar las cámaras
 def video(request,id_cam):

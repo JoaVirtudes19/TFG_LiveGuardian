@@ -14,7 +14,7 @@
 <header>
 <nav class="dashboardNav navbar navbar-expand-lg sticky-top" data-bs-theme="dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/">{{titulo}}</a>
+    <a class="navbar-brand" href="">{{titulo}}</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -26,8 +26,14 @@
         <li class="nav-item">
           <a class="nav-link" href="/Telegram">Telegram</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/Detecciones">Detecciones</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Detectar
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/Detectores">Detectores</a></li>
+            <li><a class="dropdown-item" href="/Detecciones">Detecciones</a></li>
+          </ul>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
