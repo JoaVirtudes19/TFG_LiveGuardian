@@ -5,7 +5,13 @@ from web.models import Cam,Detection,Detector
 from web.forms import CrearCamara,CrearDetector
 from django import forms
 from django.forms import ModelForm
-
+import cv2
+import datetime
+import base64
+from PIL import Image
+from django.core.files.uploadedfile import SimpleUploadedFile
+import numpy as np
+from io import BytesIO
 # Create your views here.
 
 
@@ -79,6 +85,17 @@ def deleteDetector(request,id_detector):
         return HttpResponseRedirect('/Detectores')
     
 def detailCam(request,id_cam):
+    ### Este Bloque de código se puede separar en una función aparte
+    if request.method == 'POST':
+        cam = Cam.objects.all().get(id=id_cam)
+        frame = camCache.get(id_cam).frame
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) ### Posible eliminación
+        img_pil = Image.fromarray(frame)
+        buffer = BytesIO()
+        img_pil.save(buffer, format='JPEG')
+        image_file = SimpleUploadedFile('detection-cam-'+str(id_cam) + '.jpg', buffer.getvalue())
+        fecha = datetime.datetime.now()
+        Detection.objects.create(cam=cam,date=fecha,img=image_file,items='',pred='',detector=None)
     titulo = "Vista detallada"
     cam = Cam.objects.all().get(id=id_cam)
     return render(request,'detail.html',{'titulo':titulo,'cam':cam}) ### Vista provisional
