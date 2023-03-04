@@ -6,6 +6,10 @@ from icevision.models import *
 from PIL import Image
 import numpy as np
 import time
+from io import BytesIO
+from web.models import Detection
+from datetime import datetime
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 class VideoCamera(object):
     def __init__(self,instance):
@@ -18,6 +22,7 @@ class VideoCamera(object):
         self.thread = threading.Thread(target=self.update,args=())
         self.thread.start()
         self.firstFrame = self.frame
+        self.history = [0] * 40
 
     def __del__(self):
         ### Crear un logger
@@ -45,6 +50,16 @@ class VideoCamera(object):
             else:
                 self.frame = self.firstFrame
                 self.video = cv2.VideoCapture(self.instance.url)
+
+    def make_detection(self,frame,labels,scores):
+        print("DETECCIÓN GUARDADA")
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) ### Posible eliminación
+        img_pil = Image.fromarray(frame)
+        buffer = BytesIO()
+        img_pil.save(buffer, format='JPEG')
+        image_file = SimpleUploadedFile('detection-cam-'+str(self.instance.id) + '.jpg', buffer.getvalue())
+        fecha = datetime.now()
+        Detection.objects.create(cam=self.instance,date=fecha,img=image_file,items=str(labels),pred=str(scores),detector=self.instance.detector)
 
 
 
@@ -81,6 +96,13 @@ class VideoCamera(object):
                     cv2.rectangle(frame, (box.xmin, box.ymin), (box.xmax, box.ymax), (255,0,0), 2)
                     cv2.putText(frame, label, (box.xmin, box.ymin-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255,0,0), 2)
                 self.frame = frame
+                
+                if pred_dict['detection']['label_ids']:
+                    self.history = self.history[1:] + [1]
+                    if sum(self.history) == 10:
+                        self.make_detection(frame,pred_dict['detection']['labels'],pred_dict['detection']['scores'])
+                else:
+                    self.history = self.history[1:] + [0]
                 self.fps +=1  
 
             
