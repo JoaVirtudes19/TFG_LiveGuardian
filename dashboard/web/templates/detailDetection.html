@@ -16,6 +16,7 @@
                 {% else %} <div class="haveDetector"><h3><i class="fa-solid fa-brain"></i> {{detection.detector.name}}</h3></div> {% endif %}
                 <h5>Items: {% if detection.items == None %}  {% else %} {{detection.items}} {% endif %}</h5>
                 <h5>Probabilidades: {% if detection.pred == None %}  {% else %} {{detection.pred}} {% endif %}</h5>
+                <h5><i class="fa-solid fa-calendar-days"></i> Fecha: {{detection.date}}</h5>
                 <a href="/deleteDetection/{{detection.id}}"><button type="button" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Eliminar detección</button></a>
 
 
