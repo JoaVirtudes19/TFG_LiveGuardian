@@ -67,8 +67,11 @@ class VideoCamera(object):
         bot = telebot.TeleBot(TOKEN)
         for grupo in self.instance.groups.all():
             for user in grupo.user_set.all():
-                bot.send_message(user.chat_id,"📸Detección:\nCámara: {}\nFecha: {}\nItems: {}\n%: {}".format(self.instance.name,datetime.now(),labels,scores))
-                bot.send_photo(user.chat_id, img_pil)
+                try:
+                    bot.send_message(user.chat_id,"📸Detección:\nCámara: {}\nFecha: {}\nItems: {}\n%: {}".format(self.instance.name,datetime.now(),labels,scores))
+                    bot.send_photo(user.chat_id, img_pil)
+                except:
+                    print("Usuario con id: {} no ha iniciado un chat con la app".format(user.chat_id))
 
 
 
