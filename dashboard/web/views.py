@@ -38,6 +38,10 @@ def detectores(request):
 def ayuda(request):
     return render(request,'ayuda.html',{'titulo':"Ayuda"}) ### Vista provisional
 
+def configuracion(request):
+    titulo = "Configuración"
+    return render(request,'configuracion.html',{'titulo':titulo}) ### Vista provisional
+
 def crearCamara(request):
     titulo = "Crear cámara"
     if request.method == 'POST':

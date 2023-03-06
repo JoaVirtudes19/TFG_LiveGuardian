@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block tituloPagina %} Inicio {% endblock %}
+
+{% block contenido %}
+<main role="main">
+    <h1 class="text-center" style="margin-top: 30px;">Configuración</h1>
+    <div class="container">
+        <form action="" method="post">
+            {% csrf_token %}
+              <div class="row g-3 align-items-center">
+                <div class="col-auto">
+                  <label for="numberOfFrames" class="col-form-label">Intervalo de fotogramas</label>
+                </div>
+                <div class="col-auto">
+                  <input type="number" id="numberOfFrames" class="form-control" aria-describedby="">
+                </div>
+                <div class="col-auto">
+                  <span id="passwordHelpInline" class="form-text">
+                    Este intervalo indica cada cuantos fotogramas será uno introducido en el detector.
+                  </span>
+                </div>
+              </div>
+              <div class="row g-3 align-items-center">
+                <div class="col-auto">
+                  <label for="historySize" class="col-form-label">Tamaño del historial</label>
+                </div>
+                <div class="col-auto">
+                  <input type="number" id="historySize" class="form-control" aria-describedby="passwordHelpInline">
+                </div>
+                <div class="col-auto">
+                  <span id="passwordHelpInline" class="form-text">
+                    Número de fotogramas almacenados (un número mayor puede producir retraso en las detecciones)
+                  </span>
+                </div>
+              </div>
+              <div class="row g-3 align-items-center">
+                <div class="col-auto">
+                  <label for="historySizeToDetect" class="col-form-label">Nº de fotogramas para detectar</label>
+                </div>
+                <div class="col-auto">
+                  <input type="number" id="historySizeToDetect" class="form-control" aria-describedby="passwordHelpInline">
+                </div>
+                <div class="col-auto">
+                  <span id="passwordHelpInline" class="form-text">
+                    Número de fotogramas necesarios en el historia para producirse una detección.
+                  </span>
+                </div>
+              </div>
+              <div class="row g-3 align-items-center">
+                <div class="col-auto">
+                  <label for="token" class="col-form-label">Token bot Telegram</label>
+                </div>
+                <div class="col-6">
+                  <input type="text" id="token" class="form-control" aria-describedby="passwordHelpInline">
+                </div>
+                <div class="col-auto">
+                  <span id="passwordHelpInline" class="form-text">
+                    Token del bot de Telegram utilizado en el sistema.
+                  </span>
+                </div>
+              </div>
+              <input type='submit' value='Guardar' class="btn btn-info"/>
+        </form>
+    </div>
+    </main>
+{% endblock %}
