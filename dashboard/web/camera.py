@@ -12,20 +12,24 @@ from datetime import datetime
 from django.core.files.uploadedfile import SimpleUploadedFile
 import telebot
 from telebot import types
+from web.config import global_config
 
-TOKEN = "5282233910:AAG_mddkn8zdw_Iip-n1zQX_gSURiBLomC0" ###Este toquen se saca desde la configuración
+
 class VideoCamera(object):
     def __init__(self,instance):
         self.instance  = instance
         self.live = True
         self.fps = 0
         self.recent = []
+        self.framesToDetector = global_config.get_config('framesToDetector')
+        self.historySizeToDetect = global_config.get_config('historySizeToDetect')
+        self.token = global_config.get_config('token')
         self.video = cv2.VideoCapture(instance.url)
         (self.grabbed,self.frame) = self.video.read()
+        self.firstFrame = self.frame
+        self.history = [0] * global_config.get_config('historySize')
         self.thread = threading.Thread(target=self.update,args=())
         self.thread.start()
-        self.firstFrame = self.frame
-        self.history = [0] * 40
 
     def __del__(self):
         ### Crear un logger
@@ -64,7 +68,7 @@ class VideoCamera(object):
         fecha = datetime.now()
         Detection.objects.create(cam=self.instance,date=fecha,img=image_file,items=str(labels),pred=str(scores),detector=self.instance.detector)
         ### Enviar mensaje de telegram
-        bot = telebot.TeleBot(TOKEN)
+        bot = telebot.TeleBot(self.token)
         for grupo in self.instance.groups.all():
             for user in grupo.user_set.all():
                 bot.send_message(user.chat_id,"📸Detección:\nCámara: {}\nFecha: {}\nItems: {}\n%: {}".format(self.instance.name,datetime.now(),labels,scores))
@@ -88,7 +92,7 @@ class VideoCamera(object):
                 self.frame = self.firstFrame
                 self.video = cv2.VideoCapture(self.instance.url)
                 continue
-            if self.fps % 3 == 0: ### Futuro parámetro ajustable desde la configuración en la interfaz
+            if self.fps % self.framesToDetector == 0: ### Futuro parámetro ajustable desde la configuración en la interfaz
                 self.recent = []
                 self.labels = []
                 img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) ### Posible eliminación
@@ -109,7 +113,7 @@ class VideoCamera(object):
                 
                 if pred_dict['detection']['label_ids']:
                     self.history = self.history[1:] + [1]
-                    if sum(self.history) == 10:
+                    if sum(self.history) == self.historySizeToDetect:
                         self.make_detection(frame,pred_dict['detection']['labels'],pred_dict['detection']['scores'])
                 else:
                     self.history = self.history[1:] + [0]

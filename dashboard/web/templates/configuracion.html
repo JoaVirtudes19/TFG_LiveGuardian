@@ -10,10 +10,10 @@
             {% csrf_token %}
               <div class="row g-3 align-items-center">
                 <div class="col-auto">
-                  <label for="numberOfFrames" class="col-form-label">Intervalo de fotogramas</label>
+                  <label for="framesToDetector" class="col-form-label">Intervalo de fotogramas</label>
                 </div>
                 <div class="col-auto">
-                  <input type="number" id="numberOfFrames" class="form-control" aria-describedby="">
+                  <input type="number" id="framesToDetector" class="form-control" aria-describedby="" name="framesToDetector" value="{{framesToDetector}}" required>
                 </div>
                 <div class="col-auto">
                   <span id="passwordHelpInline" class="form-text">
@@ -26,7 +26,7 @@
                   <label for="historySize" class="col-form-label">Tamaño del historial</label>
                 </div>
                 <div class="col-auto">
-                  <input type="number" id="historySize" class="form-control" aria-describedby="passwordHelpInline">
+                  <input type="number" id="historySize" class="form-control" aria-describedby="passwordHelpInline" name="historySize" value="{{historySize}}" required>
                 </div>
                 <div class="col-auto">
                   <span id="passwordHelpInline" class="form-text">
@@ -39,7 +39,7 @@
                   <label for="historySizeToDetect" class="col-form-label">Nº de fotogramas para detectar</label>
                 </div>
                 <div class="col-auto">
-                  <input type="number" id="historySizeToDetect" class="form-control" aria-describedby="passwordHelpInline">
+                  <input type="number" id="historySizeToDetect" class="form-control" aria-describedby="passwordHelpInline" name="historySizeToDetect" value="{{historySizeToDetect}}" required>
                 </div>
                 <div class="col-auto">
                   <span id="passwordHelpInline" class="form-text">
@@ -52,7 +52,7 @@
                   <label for="token" class="col-form-label">Token bot Telegram</label>
                 </div>
                 <div class="col-6">
-                  <input type="text" id="token" class="form-control" aria-describedby="passwordHelpInline">
+                  <input type="text" id="token" class="form-control" aria-describedby="passwordHelpInline" name="token" value="{{token}}" required>
                 </div>
                 <div class="col-auto">
                   <span id="passwordHelpInline" class="form-text">

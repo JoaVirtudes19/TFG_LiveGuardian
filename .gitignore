@@ -46,5 +46,18 @@ coverage.xml
 *.log
 *.pot
 
-# Sphinx documentation
-docs/_build/
+# Latex
+main.aux
+main.fdb_latexmk
+main.fls
+main.lof
+main.out
+main.pdf
+main.tex
+main.toc
+main.log
+main.synctex.gz
+main.synctex(busy)
+
+# MacOS
+.DS_Store
