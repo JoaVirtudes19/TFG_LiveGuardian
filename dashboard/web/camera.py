@@ -15,6 +15,8 @@ from telebot import types
 from web.config import global_config
 
 
+
+TOKEN = "5282233910:AAG_mddkn8zdw_Iip-n1zQX_gSURiBLomC0" ###Este toquen se saca desde la configuración
 class VideoCamera(object):
     def __init__(self,instance):
         self.instance  = instance
@@ -68,11 +70,13 @@ class VideoCamera(object):
         fecha = datetime.now()
         Detection.objects.create(cam=self.instance,date=fecha,img=image_file,items=str(labels),pred=str(scores),detector=self.instance.detector)
         ### Enviar mensaje de telegram
-        bot = telebot.TeleBot(self.token)
         for grupo in self.instance.groups.all():
             for user in grupo.user_set.all():
-                bot.send_message(user.chat_id,"📸Detección:\nCámara: {}\nFecha: {}\nItems: {}\n%: {}".format(self.instance.name,datetime.now(),labels,scores))
-                bot.send_photo(user.chat_id, img_pil)
+                try:
+                    bot.send_message(user.chat_id,"📸Detección:\nCámara: {}\nFecha: {}\nItems: {}\n%: {}".format(self.instance.name,datetime.now(),labels,scores))
+                    bot.send_photo(user.chat_id, img_pil)
+                except:
+                    print("Usuario con id: {} no ha iniciado un chat con la app".format(user.chat_id))
 
 
 
