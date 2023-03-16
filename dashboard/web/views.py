@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from web.camera import camCache
 from django.http import StreamingHttpResponse, HttpResponseRedirect
-from web.models import Cam,Detection,Detector
-from web.forms import CrearCamara,CrearDetector
+from web.models import Cam,Detection,Detector,User,Group
+from web.forms import CrearCamara,CrearDetector, CrearUsuario, CrearGrupo
 from django import forms
 from django.forms import ModelForm
 import cv2
-import datetime
+from datetime import datetime
 import base64
 from PIL import Image
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -15,13 +15,15 @@ from io import BytesIO
 # Create your views here.
 
 
-
 def inicio(request):
     cameras = Cam.objects.all()
     return render(request,'inicio.html',{'titulo':"Dashboard",'cameras':cameras}) ### Vista provisional
 
 def telegram(request):
-    return render(request,'telegram.html',{'titulo':"Telegram"}) ### Vista provisional
+    titulo = "Telegram"
+    usuarios = User.objects.all().order_by('-id')
+    grupos = Group.objects.all().order_by('-id')
+    return render(request,'telegram.html',{'titulo':titulo,'users':usuarios,'groups':grupos}) ### Vista provisional
 
 def detecciones(request):
     titulo = "Detecciones"
@@ -65,6 +67,36 @@ def crearDetector(request):
     else:
         form = CrearDetector()
         return render(request,'formulario.html',{'titulo':titulo,'form':form,'ruta':'/CrearDetector/'}) ### Vista provisional
+    
+
+def crearUsuario(request):
+    titulo = "Crear usuario"
+    if request.method == 'POST':
+        form = CrearUsuario(request.POST)
+        if form.is_valid():
+            usuario = form.save()
+            return HttpResponseRedirect('/Telegram')
+        else:
+            return render(request,'formulario.html',{'titulo':titulo,'form':form,'ruta':'/CrearUsuario/'}) ### Vista provisional
+
+    else:
+        form = CrearUsuario()
+        return render(request,'formulario.html',{'titulo':titulo,'form':form,'ruta':'/CrearUsuario/'}) ### Vista provisional
+    
+
+def crearGrupo(request):
+    titulo = "Crear grupo"
+    if request.method == 'POST':
+        form = CrearGrupo(request.POST)
+        if form.is_valid():
+            grupo = form.save()
+            return HttpResponseRedirect('/Telegram')
+        else:
+            return render(request,'formulario.html',{'titulo':titulo,'form':form,'ruta':'/CrearGrupo/'}) ### Vista provisional
+
+    else:
+        form = CrearGrupo()
+        return render(request,'formulario.html',{'titulo':titulo,'form':form,'ruta':'/CrearGrupo/'}) ### Vista provisional
 
 
 def deleteCam(request,id_cam):
@@ -83,6 +115,14 @@ def deleteDetection(request,id_detection):
 def deleteDetector(request,id_detector):
         Detector.objects.get(id=id_detector).delete()
         return HttpResponseRedirect('/Detectores')
+
+def deleteUser(request,id_user):
+        User.objects.get(id=id_user).delete()
+        return HttpResponseRedirect('/Telegram')
+
+def deleteGroup(request,id_group):
+        Group.objects.get(id=id_group).delete()
+        return HttpResponseRedirect('/Telegram')
     
 def detailCam(request,id_cam):
     ### Este Bloque de código se puede separar en una función aparte
@@ -94,8 +134,9 @@ def detailCam(request,id_cam):
         buffer = BytesIO()
         img_pil.save(buffer, format='JPEG')
         image_file = SimpleUploadedFile('detection-cam-'+str(id_cam) + '.jpg', buffer.getvalue())
-        fecha = datetime.datetime.now()
+        fecha = datetime.now()
         Detection.objects.create(cam=cam,date=fecha,img=image_file,items='',pred='',detector=None)
+
     titulo = "Vista detallada"
     cam = Cam.objects.all().get(id=id_cam)
     return render(request,'detail.html',{'titulo':titulo,'cam':cam}) ### Vista provisional

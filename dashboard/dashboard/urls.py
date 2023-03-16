@@ -30,7 +30,11 @@ urlpatterns = [
     path('deleteCam/<int:id_cam>',deleteCam),
     path('deleteDetection/<int:id_detection>',deleteDetection),
     path('deleteDetector/<int:id_detector>',deleteDetector),
+    path('deleteUser/<int:id_user>',deleteUser),
+    path('deleteGroup/<int:id_group>',deleteGroup),
     path('CrearDetector/',crearDetector),
+    path('CrearUsuario/',crearUsuario),
+    path('CrearGrupo/',crearGrupo),
     path('camara/<int:id_cam>',detailCam),
     path('detection/<int:id_detection>',detailDetection),
 
