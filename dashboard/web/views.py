@@ -12,6 +12,7 @@ from PIL import Image
 from django.core.files.uploadedfile import SimpleUploadedFile
 import numpy as np
 from io import BytesIO
+from web.config import global_config
 # Create your views here.
 
 
@@ -37,6 +38,24 @@ def detectores(request):
 
 def ayuda(request):
     return render(request,'ayuda.html',{'titulo':"Ayuda"}) ### Vista provisional
+
+def configuracion(request):
+    titulo = "Configuración"
+    framesToDetector = global_config.get_config('framesToDetector')
+    historySize = global_config.get_config('historySize')
+    historySizeToDetect = global_config.get_config('historySizeToDetect')
+    token = global_config.get_config('token')
+    if request.method == 'POST':
+        global_config.set_config(request.POST)
+        for instance in Cam.objects.all():
+            ### Update cams config
+            cam = camCache.get(instance.id)
+            cam.history = [0] * global_config.get_config('historySize')
+            cam.framesToDetector = global_config.get_config('framesToDetector')
+            cam.historySizeToDetect = global_config.get_config('historySizeToDetect')
+            cam.token = global_config.get_config('token')
+        return HttpResponseRedirect('/')
+    return render(request,'configuracion.html',{'titulo':titulo,'framesToDetector':framesToDetector,'historySize':historySize,'historySizeToDetect':historySizeToDetect,'token':token}) ### Vista provisional
 
 def crearCamara(request):
     titulo = "Crear cámara"

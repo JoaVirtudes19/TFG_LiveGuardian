@@ -21,6 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',inicio),
     path('Dashboard/',inicio),
+    path('Configuracion/',configuracion),
     path('Telegram/',telegram),
     path('Detecciones/',detecciones),
     path('Detectores/',detectores),
