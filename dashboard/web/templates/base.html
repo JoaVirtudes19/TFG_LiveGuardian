@@ -12,40 +12,39 @@
     <script src="https://kit.fontawesome.com/d4bff68adb.js" crossorigin="anonymous"></script>
 </head>
 <header>
-<nav class="dashboardNav navbar navbar-expand-lg sticky-top" data-bs-theme="dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="">{{titulo}}</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/Dashboard">Dashboard</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Detectar
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/Detectores">Detectores</a></li>
-            <li><a class="dropdown-item" href="/Detecciones">Detecciones</a></li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/Telegram">Telegram</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/Configuracion">Configuración</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/Ayuda">Ayuda</a>
-        </li>
-      </ul>
+  <nav class="dashboardNav navbar navbar-expand-lg sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href=""><i class="fas fa-eye"></i> {{titulo}}</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/Dashboard">Dashboard</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Detectar
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/Detectores">Detectores</a></li>
+              <li><a class="dropdown-item" href="/Detecciones">Detecciones</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/Telegram">Telegram</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/Configuracion">Configuración</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/Ayuda">Ayuda</a>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
-
+  </nav>
 </header>
 <body>
     {% block contenido %}

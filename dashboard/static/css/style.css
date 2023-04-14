@@ -1,11 +1,128 @@
-.dashboardNav {
-    background-color: #0C4B33;
-}
 
+/* Personalizado - Esquema de colores azul oscuro */
+:root {
+    --principal: #0D47A1;
+    --secundario: #1565C0;
+    --contraste: #FFFFFF;
+    --color-fondo-boton: #2196F3; /* Azul Material Design */
+    --color-texto-boton: #FFFFFF; /* Texto blanco para contraste */
+    --color-fondo-boton-hover: #0D47A1; /* Azul oscuro (igual que la barra de navegación) */
+  }
+  
 .haveDetector {
-    color:hsl(3, 100%, 64%);
+    color: #50C878;
 }
 
 .haveTelegram {
     color: hsl(201 ,85%, 55%);
+}
+
+
+.navbar-brand {
+  color: var(--contraste) !important;
+}
+
+  .dashboardNav {
+    background-color: var(--principal) !important;
+  }
+  
+  .dashboardNav .nav-link {
+    color: var(--contraste) !important;
+  }
+  
+  .dashboardNav .nav-link:hover,
+  .dashboardNav .nav-link:focus {
+    color: var(--secundario) !important;
+  }
+  
+  .dashboardNav .dropdown-menu {
+    background-color: var(--principal) !important;
+  }
+  
+  .dashboardNav .dropdown-item {
+    color: var(--contraste) !important;
+  }
+  
+  .dashboardNav .dropdown-item:hover,
+  .dashboardNav .dropdown-item:focus {
+    color: var(--secundario) !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  body {
+    background-color: #F5F5F5 !important;
+  }
+  
+
+  /* Estilos de botón */
+.btn-custom {
+  background-color: var(--color-fondo-boton) !important;
+  color: var(--color-texto-boton) !important;
+  border: none !important;
+  border-radius: 5px; /* Curva las esquinas del botón */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Aplica la misma sombra que en las tarjetas */
+}
+
+.btn-custom:hover,
+.btn-custom:focus {
+  background-color: var(--color-fondo-boton-hover) !important;
+  color: var(--color-texto-boton) !important;
+}
+
+/* Personalización de la columna de la tarjeta */
+.card-column {
+  margin-top: 1rem;
+}
+
+/* Personalización de la imagen de la tarjeta */
+.card-img {
+  max-height: 225px !important;
+  border-radius: 15px 15px 0 0; /* Curva las esquinas superiores de la imagen */
+  object-fit: cover; /* Ajusta la imagen para cubrir el área sin deformarla */
+
+
+}
+
+/* Personalización del título de la tarjeta */
+.card-title-overlay {
+  color: var(--contraste)!important;
+}
+
+/* Personalización de la tarjeta */
+.custom-card {
+  border-radius: 15px; /* Curva las esquinas de la tarjeta */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Aumenta el desenfoque y la opacidad de la sombra */
+
+}
+
+/* Personalización del contenedor de íconos */
+.icon-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.icon-link {
+  color: black !important;
+}
+
+
+/* Estilos para el icono de la papelera */
+.icon-trash {
+  color: inherit; /* Utiliza el color del elemento padre */
+  transition: transform 0.3s ease; /* Agrega una transición suave a la propiedad transform */
+}
+
+.icon-trash:hover {
+  color: hsl(3, 100%, 64%); /* Cambia el color al pasar el cursor sobre el icono */
+  transform: rotate(-10deg); /* Rota ligeramente el icono al pasar el cursor sobre él */
+
+}
+
+/* Estilos para el icono de la tuerca */
+.icon-gear {
+  color: inherit; /* Utiliza el color del elemento padre */
+}
+
+.icon-gear:hover {
+  color: hsl(201, 85%, 55%); /* Cambia el color al pasar el cursor sobre el icono */
 }
