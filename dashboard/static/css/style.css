@@ -121,10 +121,13 @@
 /* Estilos para el icono de la tuerca */
 .icon-gear {
   color: inherit; /* Utiliza el color del elemento padre */
+  transition: transform 0.3s ease; /* Agrega una transición suave a la propiedad transform */
 }
 
 .icon-gear:hover {
   color: hsl(201, 85%, 55%); /* Cambia el color al pasar el cursor sobre el icono */
+  transform: rotate(-360deg); /* Rota ligeramente el icono al pasar el cursor sobre él */
+
 }
 
 .rounded-image {

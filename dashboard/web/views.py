@@ -82,6 +82,26 @@ def crear_camara(request):
         form = CrearCamara()
         return render(request, 'formulario.html',
                       {'titulo': titulo, 'form': form, 'ruta': '/CrearCamara/'})  ### Vista provisional
+    
+
+def editar_camara(request,id_cam):
+    titulo = "LG/Editar cámara"
+    cam = Cam.objects.get(id=id_cam)
+    if request.method == 'POST':
+        form = CrearCamara(request.POST,instance=cam)
+        if form.is_valid():
+            camara = form.save()
+            cam_cache.delete(id_cam)
+            cam_cache.add(camara)
+            return HttpResponseRedirect('/')
+        else:
+            return render(request, 'formulario.html',
+                          {'titulo': titulo, 'form': form, 'ruta': '/EditarCamara/{}'.format(id_cam)})  ### Vista provisional
+
+    else:
+        form = CrearCamara(instance=cam)
+        return render(request, 'formulario.html',
+                      {'titulo': titulo, 'form': form, 'ruta': '/EditarCamara/{}'.format(id_cam)})  ### Vista provisional
 
 
 def crear_detector(request):
