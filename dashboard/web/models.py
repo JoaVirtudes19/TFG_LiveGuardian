@@ -34,12 +34,12 @@ class Detector(models.Model):
 
 
 class Detection(models.Model):
-    cam = models.ForeignKey("Cam", on_delete=models.SET_NULL, null=True, blank=True)
+    cam =  models.CharField(max_length=100, null=True, blank=True)
     date = models.DateTimeField(null=False, blank=False)
     img = models.ImageField(upload_to='static/detections')
     items = models.CharField(max_length=100, null=True, blank=True)
     pred = models.CharField(max_length=100, null=True, blank=True)
-    detector = models.ForeignKey(Detector, on_delete=models.SET_NULL, null=True, blank=True)
+    detector =  models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self) -> str:
         if self.cam != None:

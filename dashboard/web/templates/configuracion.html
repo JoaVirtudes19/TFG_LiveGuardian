@@ -4,64 +4,52 @@
 
 {% block contenido %}
 <main role="main">
-    <h1 class="text-center" style="margin-top: 30px;">Configuración</h1>
+    <h1 class="text-center" style="margin-top: 30px; color: var(--principal);">Configuración</h1>
     <div class="container">
         <form action="" method="post">
             {% csrf_token %}
-              <div class="row g-3 align-items-center">
-                <div class="col-auto">
-                  <label for="framesToDetector" class="col-form-label">Intervalo de fotogramas</label>
+            <div class="form-group row">
+                <label for="framesToDetector" class="col-sm-3 col-form-label">Intervalo de fotogramas</label>
+                <div class="col-sm-9">
+                    <input type="number" id="framesToDetector" class="form-control" name="framesToDetector" value="{{framesToDetector}}" required>
+                    <small class="form-text text-muted">
+                        Este intervalo indica cada cuantos fotogramas será uno introducido en el detector.
+                    </small>
                 </div>
-                <div class="col-auto">
-                  <input type="number" id="framesToDetector" class="form-control" aria-describedby="" name="framesToDetector" value="{{framesToDetector}}" required>
+            </div>
+            <div class="form-group row">
+                <label for="historySize" class="col-sm-3 col-form-label">Tamaño del historial</label>
+                <div class="col-sm-9">
+                    <input type="number" id="historySize" class="form-control" name="historySize" value="{{historySize}}" required>
+                    <small class="form-text text-muted">
+                        Número de fotogramas almacenados (un número mayor puede producir retraso en las detecciones)
+                    </small>
                 </div>
-                <div class="col-auto">
-                  <span id="passwordHelpInline" class="form-text">
-                    Este intervalo indica cada cuantos fotogramas será uno introducido en el detector.
-                  </span>
+            </div>
+            <div class="form-group row">
+                <label for="historySizeToDetect" class="col-sm-3 col-form-label">Nº de fotogramas para detectar</label>
+                <div class="col-sm-9">
+                    <input type="number" id="historySizeToDetect" class="form-control" name="historySizeToDetect" value="{{historySizeToDetect}}" required>
+                    <small class="form-text text-muted">
+                        Número de fotogramas necesarios en el historia para producirse una detección.
+                    </small>
                 </div>
-              </div>
-              <div class="row g-3 align-items-center">
-                <div class="col-auto">
-                  <label for="historySize" class="col-form-label">Tamaño del historial</label>
+            </div>
+            <div class="form-group row">
+                <label for="token" class="col-sm-3 col-form-label">Token bot Telegram</label>
+                <div class="col-sm-9">
+                    <input type="text" id="token" class="form-control" name="token" value="{{token}}" required>
+                    <small class="form-text text-muted">
+                        Token del bot de Telegram utilizado en el sistema.
+                    </small>
                 </div>
-                <div class="col-auto">
-                  <input type="number" id="historySize" class="form-control" aria-describedby="passwordHelpInline" name="historySize" value="{{historySize}}" required>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-12 text-right">
+                    <input type="submit" value="Guardar" class="btn btn-custom">
                 </div>
-                <div class="col-auto">
-                  <span id="passwordHelpInline" class="form-text">
-                    Número de fotogramas almacenados (un número mayor puede producir retraso en las detecciones)
-                  </span>
-                </div>
-              </div>
-              <div class="row g-3 align-items-center">
-                <div class="col-auto">
-                  <label for="historySizeToDetect" class="col-form-label">Nº de fotogramas para detectar</label>
-                </div>
-                <div class="col-auto">
-                  <input type="number" id="historySizeToDetect" class="form-control" aria-describedby="passwordHelpInline" name="historySizeToDetect" value="{{historySizeToDetect}}" required>
-                </div>
-                <div class="col-auto">
-                  <span id="passwordHelpInline" class="form-text">
-                    Número de fotogramas necesarios en el historia para producirse una detección.
-                  </span>
-                </div>
-              </div>
-              <div class="row g-3 align-items-center">
-                <div class="col-auto">
-                  <label for="token" class="col-form-label">Token bot Telegram</label>
-                </div>
-                <div class="col-6">
-                  <input type="text" id="token" class="form-control" aria-describedby="passwordHelpInline" name="token" value="{{token}}" required>
-                </div>
-                <div class="col-auto">
-                  <span id="passwordHelpInline" class="form-text">
-                    Token del bot de Telegram utilizado en el sistema.
-                  </span>
-                </div>
-              </div>
-              <input type='submit' value='Guardar' class="btn btn-info"/>
+            </div>
         </form>
     </div>
-    </main>
+</main>
 {% endblock %}

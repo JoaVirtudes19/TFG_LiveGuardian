@@ -176,7 +176,7 @@ def detalles_camara(request, id_cam):
         img_pil.save(buffer, format='JPEG')
         image_file = SimpleUploadedFile('detection-cam-' + str(id_cam) + '.jpg', buffer.getvalue())
         fecha = datetime.now()
-        Detection.objects.create(cam=cam, date=fecha, img=image_file, items='', pred='', detector=None)
+        Detection.objects.create(cam=cam.name, date=fecha, img=image_file, items='', pred='', detector=None)
 
     titulo = "LG/Vista detallada"
     cam = Cam.objects.all().get(id=id_cam)

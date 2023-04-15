@@ -79,8 +79,8 @@ class VideoCamera(object):
         img_pil.save(buffer, format='JPEG')
         image_file = SimpleUploadedFile('detection-cam-' + str(self.instance.id) + '.jpg', buffer.getvalue())
         fecha = datetime.now()
-        Detection.objects.create(cam=self.instance, date=fecha, img=image_file, items=str(labels), pred=str(scores),
-                                 detector=self.instance.detector)
+        Detection.objects.create(cam=self.instance.name, date=fecha, img=image_file, items=str(labels), pred=str(scores),
+                                 detector=self.instance.detector.name)
         bot = telebot.TeleBot(TOKEN)
         for group in self.instance.groups.all():
             for user in group.user_set.all():

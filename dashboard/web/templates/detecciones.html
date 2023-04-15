@@ -21,7 +21,7 @@
                 <tr>
                     <th scope="row"><a href="/Deteccion/{{detection.id}}"> Ver </a></th>
                     <td>{{detection.id}}</td>
-                    <td>{% if detection.cam == None %} Cámara desconocida {% else %}{{detection.cam.name}} {% endif %}</td>
+                    <td>{% if detection.cam == None %} Cámara desconocida {% else %}{{detection.cam}} {% endif %}</td>
                     <td>{{detection.date}}</td>
                     <td>{% if detection.detector == None %} Detector desconocido {% else %}{{detection.detector.name}} {% endif %}</td>
                   </tr>

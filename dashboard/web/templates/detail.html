@@ -19,7 +19,7 @@
                     {% if cam.groups.all %}
                     <div class="haveTelegram mb-2 ocultable text-center"><h4 style="font-size: 0.9rem;"><i class="fa-brands fa-telegram"></i> {{cam.groups.first}}</h4></div>
                     {% else %}
-                    <div class="mb-2 ocultable"><h4 style="font-size: 0.9rem;"><i class="fa-brands fa-telegram"></i> Sin grupo </h4></div>
+                    <div class="mb-2 ocultable text-center"><h4 style="font-size: 0.9rem;"><i class="fa-brands fa-telegram"></i> Sin grupo </h4></div>
                     {% endif %}
                     <div class="ocultable"><a href="/deleteCam/{{cam.id}}" class="btn btn-delete d-block mb-1" style="font-size: 0.9rem;"><i class="fa-solid fa-trash"></i> Eliminar cámara</a></div>
                     <div class="ocultable"><a href="/" class="btn btn-config d-block mb-1 ocultable" style="font-size: 0.9rem;"><i class="fa-solid fa-gear"></i> Configurar cámara</a></div>

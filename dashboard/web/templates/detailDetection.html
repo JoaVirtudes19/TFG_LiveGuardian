@@ -4,37 +4,60 @@
 
 {% block contenido %}
 <main role="main">
-    <div class="container">
-        <div class="row" style="margin-top: 30px;">
+    <div class="container mt-4">
+        <div class="row">
             <div class="col-sm-8">
-                <img class="img-fluid"  alt="{{detection.img.name}}" src="{{detection.img.url}}">
+                <img class="img-fluid" alt="{{detection.img.name}}" src="{{detection.img.url}}">
             </div>
-            <div class="col-sm-4 text-center d-flex flex-column bd-highlight mb-3 justify-content-between">
-                <h1>Detección #{{detection.id}}</h1>
-                {% if detection.cam == None %}
-                <div>
-                    <h3><i class="fa-solid fa-camera"></i> Cámara desconocida</h3>
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="display-6">Detección #{{detection.id}}</h2>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong>Cámara:</strong>
+                            {% if detection.cam == None %}
+                                <span>Desconocida</span>
+                            {% else %}
+                                <span>{{detection.cam}}</span>
+                            {% endif %}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Detector:</strong>
+                            {% if detection.detector == None %}
+                                <span>Desconocido</span>
+                            {% else %}
+                                <span>{{detection.detector}}</span>
+                            {% endif %}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Items:</strong>
+                            {% if detection.items == None %}
+                                <span>-</span>
+                            {% else %}
+                                <span>{{detection.items}}</span>
+                            {% endif %}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Probabilidades:</strong>
+                            {% if detection.pred == None %}
+                                <span>-</span>
+                            {% else %}
+                                <span>{{detection.pred}}</span>
+                            {% endif %}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Fecha:</strong>
+                            <span>{{detection.date}}</span>
+                        </li>
+                    </ul>
+                    <div class="card-footer">
+                        <a href="/deleteDetection/{{detection.id}}" class="icon-link">
+                            <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Eliminar detección</button>
+                        </a>
+                    </div>
                 </div>
-                {% else %}
-                <div class="haveTelegram">
-                    <h3><i class="fa-solid fa-camera"></i> {{detection.cam.name}}</h3>
-                </div>
-                {% endif %}
-                {% if detection.detector == None %}
-                <div>
-                    <h3><i class="fa-solid fa-brain"></i> Detector desconocido</h3>
-                </div>
-                {% else %}
-                <div class="haveDetector">
-                    <h3><i class="fa-solid fa-brain"></i> {{detection.detector.name}}</h3>
-                </div>
-                {% endif %}
-                <h5>Items: {% if detection.items == None %} {% else %} {{detection.items}} {% endif %}</h5>
-                <h5>Probabilidades: {% if detection.pred == None %} {% else %} {{detection.pred}} {% endif %}</h5>
-                <h5><i class="fa-solid fa-calendar-days"></i> Fecha: {{detection.date}}</h5>
-                <a href="/deleteDetection/{{detection.id}}" class="icon-link">
-                    <button type="button" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Eliminar detección</button>
-                </a>
             </div>
         </div>
     </div>
