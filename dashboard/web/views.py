@@ -66,7 +66,7 @@ def configuracion(request):
                    'historySizeToDetect': historySizeToDetect, 'token': token})  ### Vista provisional
 
 
-def crearCamara(request):
+def crear_camara(request):
     titulo = "LG/Crear cámara"
     if request.method == 'POST':
         form = CrearCamara(request.POST)
@@ -84,7 +84,7 @@ def crearCamara(request):
                       {'titulo': titulo, 'form': form, 'ruta': '/CrearCamara/'})  ### Vista provisional
 
 
-def crearDetector(request):
+def crear_detector(request):
     titulo = "LG/Crear detector"
     if request.method == 'POST':
         form = CrearDetector(request.POST, request.FILES)
@@ -101,7 +101,7 @@ def crearDetector(request):
                       {'titulo': titulo, 'form': form, 'ruta': '/CrearDetector/'})  ### Vista provisional
 
 
-def crearUsuario(request):
+def crear_usuario(request):
     titulo = "LG/Crear usuario"
     if request.method == 'POST':
         form = CrearUsuario(request.POST)
@@ -118,7 +118,7 @@ def crearUsuario(request):
                       {'titulo': titulo, 'form': form, 'ruta': '/CrearUsuario/'})  ### Vista provisional
 
 
-def crearGrupo(request):
+def crear_grupo(request):
     titulo = "LG/Crear grupo"
     if request.method == 'POST':
         form = CrearGrupo(request.POST)
@@ -135,7 +135,7 @@ def crearGrupo(request):
                       {'titulo': titulo, 'form': form, 'ruta': '/CrearGrupo/'})  ### Vista provisional
 
 
-def deleteCam(request, id_cam):
+def eliminar_camara(request, id_cam):
     try:
         Cam.objects.get(id=id_cam).delete()  ### Intentamos borrar la cámara
         cam_cache.delete(id_cam)
@@ -145,27 +145,27 @@ def deleteCam(request, id_cam):
         return HttpResponseRedirect('/')
 
 
-def deleteDetection(request, id_detection):
+def eliminar_deteccion(request, id_detection):
     Detection.objects.get(id=id_detection).delete()
     return HttpResponseRedirect('/Detecciones')
 
 
-def deleteDetector(request, id_detector):
+def eliminar_detector(request, id_detector):
     Detector.objects.get(id=id_detector).delete()
     return HttpResponseRedirect('/Detectores')
 
 
-def deleteUser(request, id_user):
+def eliminar_usuario(request, id_user):
     User.objects.get(id=id_user).delete()
     return HttpResponseRedirect('/Telegram')
 
 
-def deleteGroup(request, id_group):
+def eliminar_grupo(request, id_group):
     Group.objects.get(id=id_group).delete()
     return HttpResponseRedirect('/Telegram')
 
 
-def detailCam(request, id_cam):
+def detalles_camara(request, id_cam):
     ### Este Bloque de código se puede separar en una función aparte
     if request.method == 'POST':
         cam = Cam.objects.all().get(id=id_cam)
@@ -183,7 +183,7 @@ def detailCam(request, id_cam):
     return render(request, 'detail.html', {'titulo': titulo, 'cam': cam})  ### Vista provisional
 
 
-def detailDetection(request, id_detection):
+def detalles_deteccion(request, id_detection):
     titulo = "LG/Vista detallada"
     detection = Detection.objects.all().get(id=id_detection)
     return render(request, 'detailDetection.html', {'titulo': titulo, 'detection': detection})  ### Vista provisional

@@ -19,7 +19,7 @@
             <tbody>
                 {% for detection in detections %}
                 <tr>
-                    <th scope="row"><a href="/detection/{{detection.id}}"> Ver </a></th>
+                    <th scope="row"><a href="/Deteccion/{{detection.id}}"> Ver </a></th>
                     <td>{{detection.id}}</td>
                     <td>{% if detection.cam == None %} Cámara desconocida {% else %}{{detection.cam.name}} {% endif %}</td>
                     <td>{{detection.date}}</td>
