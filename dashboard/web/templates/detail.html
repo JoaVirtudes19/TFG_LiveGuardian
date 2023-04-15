@@ -4,33 +4,52 @@
 
 {% block contenido %}
 <main role="main">
-    <div class="container">
-        <div class="row" style="margin-top: 30px;">
-            <div class="col-sm-8">        <img class="img-fluid"  alt="{{cam.name}}"
-                src="/video/{{cam.id}}"> </div>
-            <div class="col-sm-4 text-center d-flex flex-column bd-highlight mb-3 justify-content-between">
-                <h1>{{cam.name}}</h1>
-                {% if cam.detector == None %}<div><h3><i class="fa-solid fa-brain"></i> Sin detector</h3></div>
-                {% else %} <div class="haveDetector"><h3><i class="fa-solid fa-brain"></i> {{cam.detector.name}}</h3></div> {% endif %}
-                {% if cam.groups.all %} 
-                <div class="haveTelegram"><h3><i class="fa-brands fa-telegram" ></i> {{cam.groups.first}}</h3> </div>
-                {% else %} <div><h3><i class="fa-brands fa-telegram" ></i> Sin grupo </h3></div> {% endif %}
-                
-            <div class="d-flex justify-content-between flex-row-reverse">
-                <div class="d-flex flex-row-reverse bd-highlight"><a href="/deleteCam/{{cam.id}}"><button type="button" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Eliminar cámara</button></a></div>
-                <div class="d-flex flex-row-reverse bd-highlight"><a href="/"><button type="button" class="btn btn-success"><i class="fa-solid fa-gear"></i> Configurar cámara</button></a></div>
-            </div>
-            <div class="d-flex justify-content-center flex-row-reverse">
-            <form action="/camara/{{cam.id}}" method="post">
+    <div style="margin-top: 30px;">
+        <div class="card fullwidth-card w-100 position-relative">
+            <img class="card-img-top img-fluid rounded-image-fw" alt="{{cam.name}}" src="/video/{{cam.id}}">
+            <form action="/Camara/{{cam.id}}" method="post">
                 {% csrf_token %}
-                <div class="d-flex flex-row-reverse bd-highlight"><a href="/"><button type="submit" class="btn btn-primary"><i class="fa-solid fa-camera"></i> Tomar instantanea</button></a></div>
+                <div class="position-absolute btn-container p-2" style="top: 0; left: 0; background-color: rgba(0, 0, 0, 0.5); color: white; border-radius: 0px 0px 15px 0px;">
+                    <h2 class="mb-1 ocultable text-center" style="font-size: 1.25rem;">{{cam.name}}</h2>
+                    {% if cam.detector == None %}
+                    <div class="mb-1 ocultable text-center"><h4 style="font-size: 0.9rem;"><i class="fa-solid fa-brain"></i> Sin detector</h4></div>
+                    {% else %}
+                    <div class="haveDetector mb-1 ocultable text-center"><h4 style="font-size: 0.9rem;"><i class="fa-solid fa-brain"></i> {{cam.detector.name}}</h4></div>
+                    {% endif %}
+                    {% if cam.groups.all %}
+                    <div class="haveTelegram mb-2 ocultable text-center"><h4 style="font-size: 0.9rem;"><i class="fa-brands fa-telegram"></i> {{cam.groups.first}}</h4></div>
+                    {% else %}
+                    <div class="mb-2 ocultable"><h4 style="font-size: 0.9rem;"><i class="fa-brands fa-telegram"></i> Sin grupo </h4></div>
+                    {% endif %}
+                    <div class="ocultable"><a href="/deleteCam/{{cam.id}}" class="btn btn-delete d-block mb-1" style="font-size: 0.9rem;"><i class="fa-solid fa-trash"></i> Eliminar cámara</a></div>
+                    <div class="ocultable"><a href="/" class="btn btn-config d-block mb-1 ocultable" style="font-size: 0.9rem;"><i class="fa-solid fa-gear"></i> Configurar cámara</a></div>
+                    <div class="ocultable">
+                        <a class="btn btn-snapshot d-block mb-1" style="font-size: 0.9rem;" onclick="this.closest('form').submit();">
+                            <i class="fa-solid fa-camera"></i> Tomar instantánea
+                        </a>
+                    </div>
+                    <div id="toggleOverlay" class="btn btn-show d-block" style="font-size: 0.9rem;"><i class="fa-solid fa-eye"></i> Ocultar</div>
+                </div>
             </form>
-            
-            </div>
-            </div>
-
         </div>
-
     </div>
-    </main>
+
+    <script>
+        const toggleOverlay = document.getElementById("toggleOverlay");
+        const ocultables = document.querySelectorAll(".ocultable");
+
+        toggleOverlay.addEventListener("click", function () {
+            ocultables.forEach(function (ocultable) {
+                if (ocultable.style.display === "none") {
+                    ocultable.style.display = "";
+                    toggleOverlay.innerHTML = '<i class="fa-solid fa-eye"></i> Ocultar';
+                } else {
+                    ocultable.style.display = "none";
+                    toggleOverlay.innerHTML = '<i class="fa-solid fa-eye"></i> Mostrar';
+                }
+            });
+        });
+    </script>
+</main>
 {% endblock %}
+

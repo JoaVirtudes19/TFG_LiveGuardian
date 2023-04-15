@@ -126,3 +126,52 @@
 .icon-gear:hover {
   color: hsl(201, 85%, 55%); /* Cambia el color al pasar el cursor sobre el icono */
 }
+
+.rounded-image {
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+.btn-delete {
+  background-color: #e74c3c !important;
+  color: var(--contraste) !important;
+}
+
+.btn-config {
+  background-color: #2ecc71 !important;
+  color: var(--contraste) !important;
+}
+
+.btn-snapshot {
+  background-color: var(--color-fondo-boton) !important;
+  color: var(--color-texto-boton) !important;
+}
+
+.btn-show {
+  background-color: #F8923A !important;
+  color: var(--color-texto-boton) !important;
+}
+
+.btn-show,
+.btn-delete,
+.btn-config,
+.btn-snapshot {
+  border: none !important;
+  border-radius: 5px; /* Curva las esquinas del botón */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Aplica la misma sombra que en las tarjetas */
+}
+
+
+.fullwidth-card {
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.rounded-image-fw {
+  border-radius: 15px 15px 0 0;
+  object-fit: cover;
+}
