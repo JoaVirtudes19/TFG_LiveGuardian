@@ -16,7 +16,7 @@
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
-                            <strong>Cámara:</strong>
+                            <strong><i class="fa-solid fa-camera"></i> Cámara:</strong>
                             {% if detection.cam == None %}
                                 <span>Desconocida</span>
                             {% else %}
@@ -24,15 +24,15 @@
                             {% endif %}
                         </li>
                         <li class="list-group-item">
-                            <strong>Detector:</strong>
+                            <strong><i class="fa-solid fa-brain"></i> Detector:</strong>
                             {% if detection.detector == None %}
-                                <span>Desconocido</span>
+                                <span>Sin detector</span>
                             {% else %}
                                 <span>{{detection.detector}}</span>
                             {% endif %}
                         </li>
                         <li class="list-group-item">
-                            <strong>Items:</strong>
+                            <strong><i class="fas fa-box"></i> Items:</strong>
                             {% if detection.items == None %}
                                 <span>-</span>
                             {% else %}
@@ -40,7 +40,7 @@
                             {% endif %}
                         </li>
                         <li class="list-group-item">
-                            <strong>Probabilidades:</strong>
+                            <strong><i class="fas fa-percentage"></i> Probabilidades:</strong>
                             {% if detection.pred == None %}
                                 <span>-</span>
                             {% else %}
@@ -48,7 +48,7 @@
                             {% endif %}
                         </li>
                         <li class="list-group-item">
-                            <strong>Fecha:</strong>
+                            <strong><i class="fa-solid fa-calendar-days"></i> Fecha:</strong>
                             <span>{{detection.date}}</span>
                         </li>
                     </ul>

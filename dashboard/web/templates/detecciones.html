@@ -23,7 +23,7 @@
                     <td>{{detection.id}}</td>
                     <td>{% if detection.cam == None %} Cámara desconocida {% else %}{{detection.cam}} {% endif %}</td>
                     <td>{{detection.date}}</td>
-                    <td>{% if detection.detector == None %} Detector desconocido {% else %}{{detection.detector}} {% endif %}</td>
+                    <td>{% if detection.detector == None %} Sin detector {% else %}{{detection.detector}} {% endif %}</td>
                   </tr>
                 {% endfor %}
 
