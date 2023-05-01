@@ -11,7 +11,7 @@ class CrearCamara(ModelForm):
             'name': 'Nombre de la cámara',
             'url': 'Url de la cámara',
             'detector': 'Seleccione un detector',
-            'groups': 'Seleccione varios grupos'
+            'groups': 'Seleccionar grupos'
         }
         widgets = {
             'name': forms.TextInput(attrs={'size': '10', 'class': 'form-control'}),
