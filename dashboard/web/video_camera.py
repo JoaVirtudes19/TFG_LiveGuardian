@@ -112,6 +112,7 @@ class VideoCamera(object):
                     self.recent_bboxes = pred_dict['detection']['bboxes']
                     self.recent_labels = pred_dict['detection']['labels']
 
+
             for i in range(len(self.recent_bboxes)):
                 bbox = self.recent_bboxes[i]
                 label = self.recent_labels[i]
@@ -122,8 +123,8 @@ class VideoCamera(object):
 
             if pred_dict['detection']['label_ids']:
                 self.history = self.history[1:] + [1]
-                if sum(self.history) == self.history_size_to_detect:
-                    self.make_detection(frame, pred_dict['detection']['labels'], pred_dict['detection']['scores'])
+                if sum(self.history) == self.history_size_to_detect and self.fps % self.frames_to_detector == 0:
+                        self.make_detection(frame, pred_dict['detection']['labels'], pred_dict['detection']['scores'])
             else:
                 self.history = self.history[1:] + [0]
 
