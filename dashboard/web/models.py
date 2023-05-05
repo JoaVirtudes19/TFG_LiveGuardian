@@ -71,7 +71,6 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
             else:
                 print("Archivo " + str(instance.model.name) + " no existe")
     except:
-        ### Añadir a un log
         print("Archivo " + str(instance.model.name) + " no ha podido ser eliminado")
 
 
@@ -86,5 +85,4 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
             else:
                 print("Archivo " + str(instance.img.path) + " no existe")
     except:
-        ### Añadir a un log
         print("Archivo " + str(instance.img.path) + " no ha podido ser eliminado")

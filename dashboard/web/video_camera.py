@@ -1,19 +1,16 @@
 import threading
+import time
 from datetime import datetime
 from io import BytesIO
 
-import telebot
 from PIL import Image
 from django.core.files.uploadedfile import SimpleUploadedFile
 from icevision.all import *
 from icevision.models import *
 
 from web.config import global_config
-from web.models import Cam
 from web.models import Detection
-import time
-
-TOKEN = global_config.get_config('token')
+from web.telegram import telegram_component
 
 
 class VideoCamera(object):
@@ -24,10 +21,9 @@ class VideoCamera(object):
         self.recent = []
         self.frames_to_detector = global_config.get_config('framesToDetector')
         self.history_size_to_detect = global_config.get_config('historySizeToDetect')
-        self.token = global_config.get_config('token')
         self.video = cv2.VideoCapture(instance.url)
         (self.grabbed, self.frame) = self.video.read()
-        self.first_frame =  cv2.imread('static/error.jpeg')
+        self.first_frame = cv2.imread('static/error.jpeg')
 
         self.history = [0] * global_config.get_config('historySize')
         self.retry = 0
@@ -35,7 +31,6 @@ class VideoCamera(object):
         self.thread.start()
 
     def __del__(self):
-        ### Crear un logger
         print("-----------------EVENT-----------------")
         print("Camera: " + str(self.instance.name) + " has been deleted.")
         self.video.release()
@@ -44,7 +39,7 @@ class VideoCamera(object):
         self.frame = self.first_frame.copy()
         alto, ancho, canales = self.frame.shape
         texto = '{:04d}s'.format(self.retry)
-        posicion = (int(ancho/2) - 250, int(alto-50))
+        posicion = (int(ancho / 2) - 250, int(alto - 50))
         cv2.putText(self.frame, texto, posicion, cv2.FONT_HERSHEY_SIMPLEX, 5, (255, 255, 255), 20)
 
     def get_frame(self):
@@ -54,13 +49,13 @@ class VideoCamera(object):
 
     ### Streaming
     def update(self):
-        if self.instance.detector != None:
+        if self.instance.detector is not None:
             self.detection()
         else:
             self.noDetection()
 
     def noDetection(self):
-        while True:
+        while self.live:
             (self.grabbed, frame) = self.video.read()
             if self.grabbed:
                 self.retry = 0
@@ -79,19 +74,10 @@ class VideoCamera(object):
         img_pil.save(buffer, format='JPEG')
         image_file = SimpleUploadedFile('detection-cam-' + str(self.instance.id) + '.jpg', buffer.getvalue())
         fecha = datetime.now()
-        Detection.objects.create(cam=self.instance.name, date=fecha, img=image_file, items=str(labels), pred=str(scores),
+        Detection.objects.create(cam=self.instance.name, date=fecha, img=image_file, items=str(labels),
+                                 pred=str(scores),
                                  detector=self.instance.detector.name)
-        bot = telebot.TeleBot(TOKEN)
-        for group in self.instance.groups.all():
-            for user in group.user_set.all():
-                try:
-                    bot.send_message(user.chat_id,
-                                     "📸Detección:\nCámara: {}\nFecha: {}\nItems: {}\n%: {}".format(self.instance.name,
-                                                                                                   datetime.now(),
-                                                                                                   labels, scores))
-                    bot.send_photo(user.chat_id, img_pil)
-                except:
-                    print("Usuario con id: {} no ha iniciado un chat con la app".format(user.chat_id))
+        telegram_component.send_detection(self.instance, labels, scores, img_pil)
 
     def detection(self):
         checkpoint_and_model = model_from_checkpoint(self.instance.detector.model.path)
@@ -126,45 +112,19 @@ class VideoCamera(object):
                     self.recent_bboxes = pred_dict['detection']['bboxes']
                     self.recent_labels = pred_dict['detection']['labels']
 
+            for i in range(len(self.recent_bboxes)):
+                bbox = self.recent_bboxes[i]
+                label = self.recent_labels[i]
+                cv2.rectangle(frame, (bbox.xmin, bbox.ymin), (bbox.xmax, bbox.ymax), (255, 0, 0), 2)
+                cv2.putText(frame, label, (bbox.xmin, bbox.ymin - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 0, 0), 2)
+
+            self.frame = frame
+
+            if pred_dict['detection']['label_ids']:
+                self.history = self.history[1:] + [1]
+                if sum(self.history) == self.history_size_to_detect:
+                    self.make_detection(frame, pred_dict['detection']['labels'], pred_dict['detection']['scores'])
             else:
-                for i in range(len(self.recent_bboxes)):
-                    bbox = self.recent_bboxes[i]
-                    label = self.recent_labels[i]
-                    cv2.rectangle(frame, (bbox.xmin, bbox.ymin), (bbox.xmax, bbox.ymax), (255, 0, 0), 2)
-                    cv2.putText(frame, label, (bbox.xmin, bbox.ymin - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 0, 0),
-                                2)
-
-                self.frame = frame
-
-                if pred_dict['detection']['label_ids']:
-                    self.history = self.history[1:] + [1]
-                    if sum(self.history) == self.history_size_to_detect:
-                        self.make_detection(frame, pred_dict['detection']['labels'], pred_dict['detection']['scores'])
-                else:
-                    self.history = self.history[1:] + [0]
+                self.history = self.history[1:] + [0]
 
             self.fps += 1
-
-
-class CamCache():
-    def __init__(self) -> None:
-        self.cache = dict()
-        ### Start cache
-        for cam_instance in Cam.objects.all():
-            print(str(cam_instance.id))
-            self.add(cam_instance)
-
-    def add(self, cam_instance):
-        self.cache[cam_instance.id] = VideoCamera(cam_instance)
-        print(self.cache)
-
-    def delete(self, cam_id):
-        cam = self.cache.pop(cam_id, None)
-        cam.live = False
-        del (cam)
-
-    def get(self, cam_id):
-        return self.cache[cam_id]
-
-
-cam_cache = CamCache()
