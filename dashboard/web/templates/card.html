@@ -1,23 +1,31 @@
-<div class="col-md-4" style="margin-top: 1rem;">
-    <a href="/camara/{{cam.id}}">
-    <div class="card mb-4">
-        <img class="img-fluid"  alt="{{cam.name}}" style="max-height: 225px  !important;;"
-         src="/video/{{cam.id}}"> 
-          <div class="card-img-overlay">
-            <h5 class="card-title" style="color: white;">{{cam.name}}</h5>
-          </div>
-        
-    </div>
-    </a>
-    <div style="display: flex; justify-content: space-around;">
-        {% if cam.detector == None %}<div><i class="fa-solid fa-brain"></i> Sin detector</div>
-        {% else %} <div class="haveDetector"><i class="fa-solid fa-brain"></i> {{cam.detector.name}}</div> {% endif %}
-        {% if cam.groups.all %} 
-        <div class="haveTelegram"><i class="fa-brands fa-telegram" ></i> {{cam.groups.first}} </div>
-        {% else %} <div><i class="fa-brands fa-telegram" ></i> Sin grupo </div> {% endif %}
-        
-        <a href="/deleteCam/{{cam.id}}" style="color: black !important;"><div><i class="fa-solid fa-trash"></i> </div></a>
-         <div><i class="fa-solid fa-gear"></i></div>
-
-    </div>
+<div class="col-md-4 card-column">
+  <a href="/Camara/{{cam.id}}">
+  <div class="card mb-4 custom-card">
+      <img class="img-fluid card-img"  alt="{{cam.name}}"
+       src="/video/{{cam.id}}"> 
+        <div class="card-img-overlay">
+          <h5 class="card-title card-title-overlay">{{cam.name}}</h5>
+        </div>
+  </div>
+  </a>
+  <div class="icon-container">
+      {% if cam.detector == None %}
+        <div><i class="fa-solid fa-brain"></i> Sin detector</div>
+      {% else %}
+        <div class="haveDetector"><i class="fa-solid fa-brain"></i> {{cam.detector.name}}</div>
+      {% endif %}
+      {% if cam.groups.all %} 
+        <div class="haveTelegram"><i class="fa-brands fa-telegram"></i> {{cam.groups.first}} </div>
+      {% else %}
+        <div><i class="fa-brands fa-telegram"></i> Sin grupo </div>
+      {% endif %}
+      
+      <a href="/deleteCam/{{cam.id}}" class="icon-link">
+        <div><i class="fa-solid fa-trash icon-trash"></i> </div>
+      </a>
+      <a href="EditarCamara/{{cam.id}}"class="icon-link">
+        <div><i class="fa-solid fa-gear icon-gear"></i></div>
+      </a>
+      
+  </div>
 </div>
