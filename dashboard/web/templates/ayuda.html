@@ -1,9 +1,23 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block tituloPagina %} Inicio {% endblock %}
 
 {% block contenido %}
 <main role="main">
-    <h1 class="text-center" style="margin-top: 30px;">Ayuda</h1>
-    </main>
+    <div class="container">
+        <h1 class="text-center" style="margin-top: 30px;">Ayuda</h1>
+        <p>¡Hola! Bienvenido a <strong>LiveGuardian</strong>, una aplicación desarrollada por José Joaquín Virtudes Castro, alumno de la ETSII en la Universidad de Sevilla, como su Trabajo Fin de Grado.
+        LiveGuardian es una aplicación de videovigilancia potenciada con el poder de la inteligencia artificial. Esta permite visualizar y detectar
+    objetos sobre múltiples cámaras en tiempo real, además de enviar alertas a usuarios por Telegram y almacenar las mismas.</p>
+    <h3>Manual de usuario</h3>
+        <p>En esta página dispones de un manual de usuario, donde se explica el uso de la interfaz, el proceso de instalación y la puesta en marcha.</p>
+
+        </p>
+        <div id="pdf-container">
+            <object id="pdf" data="{% static 'Anexos.pdf' %}"></object>
+        </div>
+          
+    </div>
+</main>
 {% endblock %}

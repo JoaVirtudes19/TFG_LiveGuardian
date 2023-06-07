@@ -61,3 +61,8 @@ main.synctex(busy)
 
 # MacOS
 .DS_Store
+dashboard/.idea/workspace.xml
+dashboard/.idea/vcs.xml
+dashboard/.idea/inspectionProfiles/profiles_settings.xml
+dashboard/.idea/dashboard.iml
+dashboard/.idea/modules.xml
